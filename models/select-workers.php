@@ -17,3 +17,18 @@ function getPosition($id)
 
     return $position['position'];
 }
+
+function getWorker($id)
+{
+    $connect = DB::getConnect();
+    $worker = $connect->query("SELECT * FROM `personnel_department`.`workers` WHERE `id`='".$id."';")->fetch(PDO::FETCH_ASSOC);
+
+    return $worker;
+}
+
+function getPay($id, $date) {
+    $connect = DB::getConnect();
+    $pay = $connect->query("SELECT 'pay'+'bounty' FROM `personnel_department`.`payment` WHERE `id`='".$id."' AND `date`;")->fetch(PDO::FETCH_ASSOC);
+    return $pay;
+}
+
