@@ -28,7 +28,7 @@ function getWorker($id)
 
 function getPay($id, $date) {
     $connect = DB::getConnect();
-    $pay = $connect->query("SELECT 'pay'+'bounty' FROM `personnel_department`.`payment` WHERE `id`='".$id."' AND `date`;")->fetch(PDO::FETCH_ASSOC);
+    $pay = $connect->query("SELECT 'pay'+'bounty' FROM `personnel_department`.`payment` WHERE `id`='".$id."' AND `date`='".$date."';")->fetch(PDO::FETCH_ASSOC);
     return $pay;
 }
 
