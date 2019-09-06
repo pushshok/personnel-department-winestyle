@@ -3,3 +3,16 @@
     margin: 5px;
     padding: 5px;
 }
+
+.center {
+    text-align: center;
+}
+
+.myCalendar.nao-month td {
+    padding: 15px;
+}
+
+.myCalendar .month-head>div,
+.myCalendar .month-head>button {
+    padding: 15px;
+}

@@ -19,5 +19,5 @@ const SITENAME = "winestyle.test";
 * Константы для папок
 */
 
-const UPLOAD = "/images/upload";
-const UPLOAD_MINI = "/images/upload_mini";
+const UPLOAD = "images/upload/";
+const UPLOAD_MINI = "images/upload_mini/";
