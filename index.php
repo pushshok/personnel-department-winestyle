@@ -67,6 +67,8 @@ $workers = getWorkers();
             <li><a href="models/install.php">Создание таблиц</a></li>
             <li><a href="models/insert.php">Наполнение таблиц демо-данными</a></li>
             <li><a href="models/payment-generate.php">Начислить зарплату</a></li>
+            <li>Выдать премию за <input type="date"  value=""></li>
+            <li>Выдать премию за </li>
         </ul>
     </div>
 </div>

@@ -10,7 +10,7 @@ $date = isset($date) ? $date : date("m.Y");
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
-    <title>Профайл работника № <?=$id;?></title>
+    <title>Профайл работника № <?= $id; ?></title>
 
     <link rel="stylesheet" type="text/css" href="css/style.css"/>
     <link rel="stylesheet" type="text/css" href="css/style.css"/>
@@ -36,6 +36,30 @@ $date = isset($date) ? $date : date("m.Y");
             });
         });
 
+        function convert() {
+            var Rpay = $("#get-pay").html();
+            var Rbounty = $("#get-bounty").html();
+
+
+            $.ajax({
+                method: "POST",
+                url: "models/soap.php",
+                data: {pay: Rpay, bounty: Rbounty},
+                success: function (response) {
+                    //alert(response);
+                    response = JSON.parse(response);
+                    let payUSD = response[0] + " у.е.";
+                    let bountyUSD = response[1] + " у.е.";
+                    $("#get-pay").html(payUSD);
+                    $("#get-bounty").html(bountyUSD);
+                    $("#val-pay").html("");
+                    $("#val-bounty").html("");
+                }
+            });
+        }
+
+
+
         function getpay(nid) {
             var datepick = $('#datepick').val();
             //alert (datepick + nid);
@@ -45,7 +69,13 @@ $date = isset($date) ? $date : date("m.Y");
                 data: {id: nid, date: datepick},
                 success: function (answer) {
                     //alert(answer);
-                    $("#get-pay").html(answer);
+                    answer = JSON.parse(answer);
+                    let pay = answer[0];
+                    let bounty = answer[1];
+                    $("#get-pay").html(pay);
+                    $("#get-bounty").html(bounty);
+                    $("#val-pay").html(" рублей.");
+                    $("#val-bounty").html(" рублей.");
                 }
             });
         }
@@ -85,13 +115,13 @@ $date = isset($date) ? $date : date("m.Y");
 <div class="container  worker">
     <?php if ($id != 0): ?>
         <div class="container">
-            <div class="col-md-3">
+            <div class="col-md-6">
                 <h1>Профайл сотрудника: <?= $worker['id'] . "<br>"; ?></h1>
                 <?php if ($worker['path_mini']): ?>
                     <a class="photo" href="<?= $worker['path']; ?>"><img src="<?= $worker['path_mini']; ?>"></a>
                 <?php endif; ?>
             </div>
-        </div>
+        </div><br>
         <form name="worker" action="models/add-workers.php" method="post" enctype="multipart/form-data">
             <input name="id" id="id" value="<?= $worker['id']; ?>" type="hidden">
             <input name="path" id="path" value="<?= $worker['path']; ?>" type="hidden">
@@ -111,18 +141,26 @@ $date = isset($date) ? $date : date("m.Y");
             <br>
             <input type="submit" value="Редактировать" class="btn bg-primary">
         </form><br>
-
-        <label for="datepick">Зарплата за выбранный месяц:</label>
-        <input type='text' id="datepick" class="datepick" name="datepick" data-position="right top" value=""><button onclick="getpay(<?=$id; ?>)">Рассчитать</button>
+        <h2>Узнать зарплату работника за месяц</h2>
+        <label for="datepick">Выбрать месяц:</label>
+        <input type='text' id="datepick" class="datepick" name="datepick" data-position="right top" value="">
+        <button onclick="getpay(<?= $id; ?>)">Рассчитать</button>
+        <button onclick="convert()">Конвертировать</button>
         <br>
-        <div id="get-pay" class="lead"></div>
-
+        <div class="col-md-6">
+            <p>Зарплата работника: <span id="get-pay" class="lead"></span><span id="val-pay" class="lead"></span></p>
+            <p>Премия работника: <span id="get-bounty" class="lead"></span><span id="val-bounty" class="lead"></span></p>
+        </div>
         <br>
-        <a href="/">В отдел персонала</a>
+        <div class="col-md-12">
+            <a class="lead" href="/">В отдел персонала</a>
+        </div>
+
     <?php else: ?>
         Не выбрано ни одного сотрудника<br>
     <?php endif; ?>
 </div>
+
 <br><br>
 <div class="container">
     <span class="center">&copy; <?= SITENAME; ?></span>
