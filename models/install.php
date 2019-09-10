@@ -18,7 +18,7 @@ try {
     $arr_payment = $connect->query("SHOW TABLES LIKE 'payment'")->fetchAll(PDO::FETCH_NUM);
 
     if ($arr_payment[0] != "payment") {
-        $connect->exec("CREATE TABLE `personnel_department`.`payment` (`id` INT(11) NOT NULL AUTO_INCREMENT, `worker_id` INT(11) NOT NULL, `date` VARCHAR(6) NOT NULL, `pay` INT(11) NOT NULL, `bounty` INT(11) NOT NULL, FOREIGN KEY (`worker_id`) REFERENCES `payment` (`id`), PRIMARY KEY (`id`)) ENGINE = InnoDB;" );
+        $connect->exec("CREATE TABLE `personnel_department`.`payment` (`id` INT(11) NOT NULL AUTO_INCREMENT, `worker_id` INT(11) NOT NULL, `date` VARCHAR(6) NOT NULL, `pay` INT(11) NULL, `bounty` INT(11) NULL, PRIMARY KEY (`id`)) ENGINE = InnoDB;" );
     }
 
     $arr_professions = $connect->query("SHOW TABLES LIKE 'professions'")->fetchAll(PDO::FETCH_NUM);

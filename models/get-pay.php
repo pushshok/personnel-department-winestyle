@@ -1,10 +1,9 @@
 <?php
 
 require_once "../connect.php";
-$id = isset($_POST['id']) ? strip_tags(htmlspecialchars($_POST['id'])) : "0";
-$data = isset($_POST['date']) ? (string)strip_tags(htmlspecialchars($_POST['date'])) : "";
+$id = isset($_GET['id']) ? strip_tags(htmlspecialchars($_GET['id'])) : "0";
+$data = isset($_GET['date']) ? (string)strip_tags(htmlspecialchars($_GET['date'])) : "";
 $data = str_replace('.', '', $data);
-
 
 function getPay($id, $data)
 {
@@ -17,8 +16,6 @@ function getPay($id, $data)
     $pay = $prepared->fetch(PDO::FETCH_ASSOC);
 
     if($pay){
-        //echo "Зарплата: ".$pay['pay']." рублей.<br>";
-        //echo "Премия: ".$pay['bounty']." рублей.<br>";
         echo json_encode(array($pay['pay'], $pay['bounty']));
 
     } else {

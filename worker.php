@@ -8,45 +8,32 @@ $date = isset($date) ? $date : date("m.Y");
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
-    <title>Профайл работника № <?= $id; ?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <title>Профайл работника № <?= $id; ?></title>
     <link rel="stylesheet" type="text/css" href="css/style.css"/>
-    <link rel="stylesheet" type="text/css" href="css/style.css"/>
-    <script type="text/javascript" src="js/jquery.js"></script>
+
+    <script type="text/javascript" src="js/jquery-1.8.0.js"></script>
     <script type="text/javascript" src="js/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
     <script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
     <link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen"/>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/ymCal.css" rel="stylesheet" type="text/css">
     <script src="js/ymCal.js"></script>
-    <script
-            src="https://code.jquery.com/jquery-3.4.1.min.js"
-            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-            crossorigin="anonymous"></script>
+
 
     <script type="text/javascript">
-        $(document).ready(function () {
-            $("a.photo").fancybox({
-                transitionIn: 'elastic',
-                transitionOut: 'elastic',
-                speedIn: 500,
-                speedOut: 500
-            });
-        });
 
         function convert() {
             var Rpay = $("#get-pay").html();
             var Rbounty = $("#get-bounty").html();
-
-
             $.ajax({
-                method: "POST",
+                method: "GET",
                 url: "models/soap.php",
                 data: {pay: Rpay, bounty: Rbounty},
                 success: function (response) {
-                    //alert(response);
+
                     response = JSON.parse(response);
                     let payUSD = response[0] + " у.е.";
                     let bountyUSD = response[1] + " у.е.";
@@ -58,17 +45,15 @@ $date = isset($date) ? $date : date("m.Y");
             });
         }
 
-
-
         function getpay(nid) {
             var datepick = $('#datepick').val();
-            //alert (datepick + nid);
+
             $.ajax({
-                method: "POST",
+                method: "GET",
                 url: "models/get-pay.php",
-                data: {id: nid, date: datepick},
+                data: {'id': nid, 'date': datepick},
                 success: function (answer) {
-                    //alert(answer);
+                    alert(answer);
                     answer = JSON.parse(answer);
                     let pay = answer[0];
                     let bounty = answer[1];
@@ -80,8 +65,7 @@ $date = isset($date) ? $date : date("m.Y");
             });
         }
 
-
-        $(function () {
+        $(document).ready(function () {
             ymCal(
                 $(".datepick"),
                 null,
@@ -89,25 +73,29 @@ $date = isset($date) ? $date : date("m.Y");
                 null,
                 null,
                 function (event, month, year) {
-                    //alert(event + month + year );
                     event = "";
                     var mon;
                     if (month < 10) {
                         mon = "0" + month
                     }
                     var datepick = mon + "." + year;
-                    //if (mon === 'undefined') {
-                    //    $(".datepick").val("Неверный формат.");
-                    //} else {
                     $(".datepick").val(datepick);
-                    //}
-
                 },
                 100000,
                 10
             );
         });
-        //]]>
+
+
+        $(document).ready(function () {
+            $("a.photo").fancybox({
+                transitionIn: 'elastic',
+                transitionOut: 'elastic',
+                speedIn: 500,
+                speedOut: 500
+            });
+        });
+
     </script>
 </head>
 <body>
@@ -149,7 +137,8 @@ $date = isset($date) ? $date : date("m.Y");
         <br>
         <div class="col-md-6">
             <p>Зарплата работника: <span id="get-pay" class="lead"></span><span id="val-pay" class="lead"></span></p>
-            <p>Премия работника: <span id="get-bounty" class="lead"></span><span id="val-bounty" class="lead"></span></p>
+            <p>Премия работника: <span id="get-bounty" class="lead"></span><span id="val-bounty" class="lead"></span>
+            </p>
         </div>
         <br>
         <div class="col-md-12">

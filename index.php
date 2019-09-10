@@ -10,13 +10,14 @@ $workers = getWorkers();
     <meta charset="UTF-8">
     <title>Отдел персонала</title>
 
-
     <link rel="stylesheet" type="text/css" href="css/style.css"/>
-    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jquery-1.8.0.js"></script>
     <script type="text/javascript" src="js/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
     <script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
     <link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen"/>
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/ymCal.css" rel="stylesheet" type="text/css">
+    <script src="js/ymCal.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -27,7 +28,80 @@ $workers = getWorkers();
                 speedOut: 500
             });
         });
+
+        $(document).ready(function () {
+            ymCal(
+                $(".date-bounty"),
+                null,
+                "bottom",
+                null,
+                null,
+                function (event, month, year) {
+                    event = "";
+                    var mon;
+                    if (month < 10) {
+                        mon = "0" + month
+                    }
+                    var date = mon + "." + year;
+                    $(".date-bounty").val(date);
+                },
+                100000,
+                10
+            );
+        });
+
+        $(document).ready(function () {
+            ymCal(
+                $(".date-pay"),
+                null,
+                "bottom",
+                null,
+                null,
+                function (event, month, year) {
+                    event = "";
+                    var mon;
+                    if (month < 10) {
+                        mon = "0" + month
+                    }
+                    var date = mon + "." + year;
+                    $(".date-pay").val(date);
+                },
+                100000,
+                10
+            );
+        });
+
+        function setPay() {
+            var id = $('#prof-pay').val();
+            var datePay = $('#date-pay').val();
+            var payAmount = $('#set-pay').val();
+
+            $.ajax({
+                method: "GET",
+                url: "models/set-pay.php",
+                data: {'id': id, 'date': datePay, 'pay': payAmount},
+                success: function (answer) {
+                    alert(answer);
+                }
+            });
+        }
+
+        function setBounty() {
+            var nid = $('#prof-bounty').val();
+            var dateBounty = $('#date-bounty').val();
+            var bountyAmount = $('#set-bounty').val();
+
+            $.ajax({
+                method: "GET",
+                url: "models/set-bounty.php",
+                data: {'id': nid, 'date': dateBounty, 'bounty': bountyAmount},
+                success: function (answer) {
+                    alert(answer);
+                }
+            });
+        }
     </script>
+
 
 </head>
 <body>
@@ -67,8 +141,33 @@ $workers = getWorkers();
             <li><a href="models/install.php">Создание таблиц</a></li>
             <li><a href="models/insert.php">Наполнение таблиц демо-данными</a></li>
             <li><a href="models/payment-generate.php">Начислить зарплату</a></li>
-            <li>Выдать премию за <input type="date"  value=""></li>
-            <li>Выдать премию за </li>
+            <li><label for="prof-pay">Выдать зарплату:</label>
+                <select id="prof-pay" class="prof-pay" name="prof-pay">
+                    <option selected value="1">Бухгалтерам</option>
+                    <option value="2">Курьерам</option>
+                    <option value="3">Менеджерам</option>
+                </select><br>
+                <label for="date-pay">Выбрать месяц:</label>
+                <input type='text' id="date-pay" class="date-pay" name="date-pay" data-position="right top"
+                       value=""><br>
+                <label for="set-pay">Сумма:</label>
+                <input type="text" id="set-pay" class="set-pay" name="set-pay"><br>
+                <button onclick="setPay()">Начислить</button>
+            </li>
+            <li>
+                <label for="prof-bounty">Выдать премию:</label>
+                <select id="prof-bounty" class="prof-bounty" name="prof-bounty">
+                    <option selected value="1">Бухгалтерам</option>
+                    <option value="2">Курьерам</option>
+                    <option value="3">Менеджерам</option>
+                </select><br>
+                <label for="date-bounty">Выбрать месяц:</label>
+                <input type='text' id="date-bounty" class="date-bounty" name="date-bounty" data-position="right top"
+                       value=""><br>
+                <label for="set-bounty">Сумма:</label>
+                <input type="text" id="set-bounty" class="set-bounty" name="set-bounty"><br>
+                <button onclick="setBounty()">Начислить</button>
+            </li>
         </ul>
     </div>
 </div>

@@ -1,7 +1,7 @@
 <?php
 
-$pay = isset($_POST['pay']) ? strip_tags(htmlspecialchars($_POST['pay'])) : "";
-$bounty = isset($_POST['bounty']) ? strip_tags(htmlspecialchars($_POST['bounty'])) : "";
+$pay = isset($_GET['pay']) ? strip_tags(htmlspecialchars($_GET['pay'])) : "";
+$bounty = isset($_GET['bounty']) ? strip_tags(htmlspecialchars($_GET['bounty'])) : "";
 
 function getUSD($pay, $bounty)
 {
